@@ -5,7 +5,7 @@ A unified, self-contained repository for installing NeoVim with LazyVim configur
 ## Quick Start
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/neovim-setup.git ~/neovim-setup
+git clone https://github.com/dhruvthanki/neovim-setup.git ~/neovim-setup
 cd ~/neovim-setup
 make install
 ```
@@ -148,7 +148,7 @@ make reinstall
 
 ```bash
 # On new machine
-git clone https://github.com/YOUR_USERNAME/neovim-setup.git ~/neovim-setup
+git clone https://github.com/dhruvthanki/neovim-setup.git ~/neovim-setup
 cd ~/neovim-setup
 make install
 
