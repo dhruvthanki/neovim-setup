@@ -15,7 +15,7 @@ make install
 1. **Detects your OS** (Ubuntu, Debian, Arch, Fedora, macOS)
 2. **Backs up** existing `~/.config/nvim` if present
 3. **Installs dependencies** (cmake, ninja, gcc, ripgrep, fd, fzf)
-4. **Builds NeoVim** from source (latest stable)
+4. **Installs NeoVim** (via Homebrew on macOS, built from source on Linux)
 5. **Symlinks configuration** from this repo to `~/.config/nvim`
 6. **Auto-installs plugins** via lazy.nvim on first launch
 
@@ -36,7 +36,7 @@ make install
 ```bash
 make install            # Full installation
 make install-deps       # System dependencies only
-make install-nvim       # NeoVim only (build from source)
+make install-nvim       # NeoVim only (Homebrew on macOS, source on Linux)
 make install-config     # Configuration symlink only
 ```
 
