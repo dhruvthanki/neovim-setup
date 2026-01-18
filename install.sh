@@ -26,7 +26,7 @@ INSTALL_DEPS=true
 INSTALL_NVIM=true
 INSTALL_CONFIG=true
 INIT_PLUGINS=true
-NVIM_METHOD="source"
+NVIM_METHOD=""  # Will be set based on OS detection
 NVIM_VERSION="stable"
 FORCE=false
 VERBOSE=false
@@ -281,6 +281,17 @@ main() {
     detect_os
     print_os_info
     echo ""
+
+    # Set default install method based on OS (if not specified)
+    if [[ -z "$NVIM_METHOD" ]]; then
+        if [[ "$OS_TYPE" == "darwin" ]]; then
+            # Use Homebrew on macOS (avoids sudo requirements)
+            NVIM_METHOD="package"
+        else
+            # Build from source on Linux for latest version
+            NVIM_METHOD="source"
+        fi
+    fi
 
     # Check if OS is supported
     if ! is_supported_os; then

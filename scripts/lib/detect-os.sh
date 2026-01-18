@@ -210,7 +210,12 @@ pkg_install() {
     fi
 
     log_info "Installing packages: $*"
-    maybe_sudo $PKG_INSTALL "$@"
+    # Homebrew should not use sudo
+    if [[ "$PKG_MANAGER" == "brew" ]]; then
+        $PKG_INSTALL "$@"
+    else
+        maybe_sudo $PKG_INSTALL "$@"
+    fi
 }
 
 # Update package lists
@@ -220,7 +225,12 @@ pkg_update() {
     fi
 
     log_info "Updating package lists..."
-    maybe_sudo $PKG_UPDATE
+    # Homebrew should not use sudo
+    if [[ "$PKG_MANAGER" == "brew" ]]; then
+        $PKG_UPDATE
+    else
+        maybe_sudo $PKG_UPDATE
+    fi
 }
 
 # Run detection if script is executed directly
