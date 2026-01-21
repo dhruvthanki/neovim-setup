@@ -137,8 +137,18 @@ autocmd("TermOpen", {
   end,
 })
 
+-- Disable mouse after all plugins load (overrides LazyVim default)
+autocmd("VimEnter", {
+  group = augroup("disable_mouse", { clear = true }),
+  callback = function()
+    vim.opt.mouse = ""
+  end,
+})
+
+
 -- Check if we need to reload the file when it changed
-autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+-- Extended events for better auto-reload with Claude Code workflow
+autocmd({ "FocusGained", "TermClose", "TermLeave", "BufEnter", "CursorHold", "CursorHoldI" }, {
   group = augroup("checktime", { clear = true }),
   callback = function()
     if vim.o.buftype ~= "nofile" then

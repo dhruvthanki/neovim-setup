@@ -52,6 +52,9 @@ opt.backup = false
 opt.undodir = vim.fn.stdpath("data") .. "/undodir"
 opt.undofile = true
 
+-- Auto-reload files changed externally
+opt.autoread = true
+
 -- Faster completion
 opt.updatetime = 50
 opt.timeoutlen = 300
@@ -65,8 +68,8 @@ opt.foldexpr = "nvim_treesitter#foldexpr()"
 opt.foldenable = false
 opt.foldlevel = 99
 
--- Mouse support
-opt.mouse = "a"
+-- Mouse support (disabled for Claude Code workflow)
+opt.mouse = ""
 
 -- Show invisible characters
 opt.list = true
