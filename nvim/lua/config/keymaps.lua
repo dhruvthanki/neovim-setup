@@ -29,18 +29,7 @@ map({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete without yanking" })
 
 -- Terminal mappings
 map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
-
--- <C-hjkl> moves between nvim windows; at the edge of nvim's layout, hand off to the
--- Rex pane in that direction (only when running inside Rex). Set vim.g.rex_bin to
--- override the `rex` executable.
-local rex_directions = { h = "left", j = "down", k = "up", l = "right" }
-for key, direction in pairs(rex_directions) do
-  map({ "n", "t" }, "<C-" .. key .. ">", function()
-    local win = vim.api.nvim_get_current_win()
-    vim.cmd("wincmd " .. key)
-    local session = vim.env.REX_SESSION
-    if vim.api.nvim_get_current_win() == win and session and session ~= "" then
-      vim.system({ vim.g.rex_bin or "rex", "focus", direction, "-s", session })
-    end
-  end, { desc = "Go to " .. direction .. " window / Rex pane" })
-end
+map("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to left window" })
+map("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to lower window" })
+map("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window" })
+map("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window" })

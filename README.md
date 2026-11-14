@@ -101,9 +101,6 @@ Run the agent (e.g. Claude Code) in its own multiplexer pane; nvim auto-reloads 
 - `<leader>gv` / `<leader>gV` - Diffview of the working tree / current file history
 - `claudecode.nvim` (`provider = "none"`) lets a Claude running in another pane connect via `/ide`:
   `<leader>ab` add buffer, `<leader>as` send selection, `<leader>aa` / `<leader>ad` accept / deny a diff
-- `<C-h/j/k/l>` move between nvim windows and, at the edge, to the neighbouring
-  Rex pane via `rex focus` (only inside Rex; set `vim.g.rex_bin` if `rex` on your `PATH` is not
-  the Rex multiplexer)
 
 ### C/C++ in catkin workspaces
 
