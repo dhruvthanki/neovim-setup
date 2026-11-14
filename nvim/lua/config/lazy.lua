@@ -15,10 +15,8 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Load options before plugins
-require("config.options")
-
--- Setup lazy.nvim
+-- Setup lazy.nvim (LazyVim itself loads config.options, config.keymaps and
+-- config.autocmds after its own defaults, so they must not be required here)
 require("lazy").setup({
   spec = {
     -- Import LazyVim and its plugins
@@ -38,6 +36,7 @@ require("lazy").setup({
     version = false,
   },
   install = { colorscheme = { "gruvbox", "tokyonight", "habamax" } },
+  rocks = { enabled = false }, -- no plugin here needs luarocks
   checker = {
     enabled = true,
     notify = false,
@@ -54,7 +53,3 @@ require("lazy").setup({
     },
   },
 })
-
--- Load keymaps after plugins
-require("config.keymaps")
-require("config.autocmds")
