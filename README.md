@@ -74,7 +74,7 @@ The NeoVim configuration lives in `~/neovim-setup/nvim/` and is symlinked to `~/
 | Key | Action |
 |-----|--------|
 | `<Space>` | Leader key |
-| `<leader>e` | Toggle file explorer (Snacks) |
+| `<leader>e` | Toggle file explorer (Neo-tree) |
 | `<leader>ff` | Find files (Snacks picker) |
 | `<leader>fg` | Find git-tracked files |
 | `<leader>/` | Live grep |
@@ -86,7 +86,8 @@ The NeoVim configuration lives in `~/neovim-setup/nvim/` and is symlinked to `~/
 
 - **LazyVim** - Base configuration framework (needs Neovim 0.12+ for the current nvim-treesitter)
 - **Gruvbox** - Colorscheme
-- **Snacks.nvim** - Picker, explorer, lazygit, terminal
+- **Neo-tree** - File explorer (enabled via the `editor.neo-tree` extra so LazyVim's Snacks explorer does not compete for `<leader>e`)
+- **Snacks.nvim** - Picker, lazygit, terminal
 - **Treesitter** - Syntax highlighting (parsers are built with the tree-sitter CLI)
 - **LSP** - Language servers via Mason; C++ (clangd), Python, CMake and YAML extras are enabled
 - **Which-key** - Keybinding hints
