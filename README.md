@@ -14,7 +14,7 @@ make install
 
 1. **Detects your OS** (Ubuntu, Debian, Arch, Fedora, macOS)
 2. **Backs up** existing `~/.config/nvim` if present
-3. **Installs dependencies** (cmake, ninja, gcc, ripgrep, fd, fzf)
+3. **Installs dependencies** (cmake, ninja, gcc, ripgrep, fd, fzf, tree-sitter CLI, lazygit)
 4. **Installs NeoVim** (via Homebrew on macOS, built from source on Linux)
 5. **Symlinks configuration** from this repo to `~/.config/nvim`
 6. **Auto-installs plugins** via lazy.nvim on first launch
@@ -74,23 +74,24 @@ The NeoVim configuration lives in `~/neovim-setup/nvim/` and is symlinked to `~/
 | Key | Action |
 |-----|--------|
 | `<Space>` | Leader key |
-| `<leader>e` | Toggle file explorer (Neo-tree) |
-| `<leader>ff` | Find files (Telescope) |
-| `<leader>fg` | Live grep (Telescope) |
+| `<leader>e` | Toggle file explorer (Snacks) |
+| `<leader>ff` | Find files (Snacks picker) |
+| `<leader>fg` | Find git-tracked files |
+| `<leader>/` | Live grep |
 | `<leader>gg` | Open Lazygit |
 | `<C-/>` | Toggle terminal |
 | `<S-h>` / `<S-l>` | Previous/Next buffer |
 
 ### Plugins Included
 
-- **LazyVim** - Base configuration framework
+- **LazyVim** - Base configuration framework (needs Neovim 0.12+ for the current nvim-treesitter)
 - **Gruvbox** - Colorscheme
-- **Neo-tree** - File explorer
-- **Snacks.nvim** - QoL improvements
-- **Telescope** - Fuzzy finder
-- **Treesitter** - Syntax highlighting
-- **LSP** - Language server support
+- **Snacks.nvim** - Picker, explorer, lazygit, terminal
+- **Treesitter** - Syntax highlighting (parsers are built with the tree-sitter CLI)
+- **LSP** - Language servers via Mason; C++ (clangd), Python, CMake and YAML extras are enabled
 - **Which-key** - Keybinding hints
+
+LazyVim extras are listed in `nvim/lazyvim.json`; manage them with `:LazyExtras`.
 
 ### Customization
 

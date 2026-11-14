@@ -114,6 +114,68 @@ install_runtime_deps() {
     log_success "Runtime dependencies installed"
 }
 
+# Install the tree-sitter CLI (>= 0.26.1), which nvim-treesitter needs to build parsers.
+# Mason's prebuilt binary needs a newer glibc than older distros ship, so prefer the
+# package manager, then cargo (compiles against the local glibc).
+install_treesitter_cli() {
+    if command_exists tree-sitter && tree-sitter --version &>/dev/null; then
+        log_info "tree-sitter CLI already installed"
+        return 0
+    fi
+
+    log_step "Installing tree-sitter CLI..."
+    case "$PKG_MANAGER" in
+        pacman|brew)
+            pkg_install tree-sitter-cli && return 0
+            ;;
+    esac
+    if command_exists cargo; then
+        cargo install tree-sitter-cli --locked && return 0
+    fi
+    log_warn "Could not install the tree-sitter CLI (needs >= 0.26.1)"
+    log_warn "  Install it with: cargo install tree-sitter-cli --locked"
+    return 1
+}
+
+# Install lazygit (used by <leader>gg). Not packaged on older apt/dnf, so fall back
+# to the upstream release tarball.
+install_lazygit() {
+    if command_exists lazygit; then
+        log_info "lazygit already installed"
+        return 0
+    fi
+
+    log_step "Installing lazygit..."
+    case "$PKG_MANAGER" in
+        pacman|brew)
+            pkg_install lazygit && return 0
+            ;;
+    esac
+
+    local arch version tmp
+    case "$(uname -m)" in
+        x86_64) arch="x86_64" ;;
+        aarch64|arm64) arch="arm64" ;;
+        *) log_warn "No lazygit release for $(uname -m); install it manually"; return 1 ;;
+    esac
+    version=$(curl -fsSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest \
+        | sed -n 's/.*"tag_name": *"v\([^"]*\)".*/\1/p')
+    if [[ -z "$version" ]]; then
+        log_warn "Could not determine the latest lazygit version; install it manually"
+        return 1
+    fi
+    tmp=$(mktemp -d)
+    curl -fsSL -o "$tmp/lazygit.tar.gz" \
+        "https://github.com/jesseduffield/lazygit/releases/download/v${version}/lazygit_${version}_Linux_${arch}.tar.gz" \
+        && tar -xzf "$tmp/lazygit.tar.gz" -C "$tmp" lazygit \
+        && mkdir -p "$HOME/.local/bin" \
+        && install -m 0755 "$tmp/lazygit" "$HOME/.local/bin/lazygit" \
+        && log_success "lazygit $version installed to ~/.local/bin"
+    local status=$?
+    rm -rf "$tmp"
+    return $status
+}
+
 # Install optional dependencies
 install_optional_deps() {
     log_step "Installing optional dependencies (Node.js)..."
@@ -151,7 +213,7 @@ check_deps() {
     done
 
     # Runtime dependencies
-    for cmd in rg fzf; do
+    for cmd in rg fzf tree-sitter; do
         if ! command_exists "$cmd"; then
             missing+=("$cmd")
         fi
@@ -182,7 +244,9 @@ print_deps_status() {
     echo "  ripgrep: $(command_exists rg && echo "installed" || echo "MISSING")"
     echo "  fd:      $((command_exists fd || command_exists fdfind) && echo "installed" || echo "MISSING")"
     echo "  fzf:     $(command_exists fzf && echo "installed" || echo "MISSING")"
-    echo "  node:    $(command_exists node && echo "installed ($(node --version))" || echo "not installed")"
+    echo "  tree-sitter: $(command_exists tree-sitter && echo "installed" || echo "MISSING")"
+    echo "  lazygit: $(command_exists lazygit && echo "installed" || echo "not installed")"
+    echo "  node:   $(command_exists node && echo "installed ($(node --version))" || echo "not installed")"
     echo ""
 }
 
@@ -248,6 +312,8 @@ main() {
 
     if $install_runtime; then
         install_runtime_deps
+        install_treesitter_cli || log_warn "tree-sitter CLI missing: treesitter parsers will not build"
+        install_lazygit || log_warn "lazygit missing: <leader>gg will not work"
     fi
 
     if $install_optional; then
