@@ -94,6 +94,30 @@ The NeoVim configuration lives in `~/neovim-setup/nvim/` and is symlinked to `~/
 
 LazyVim extras are listed in `nvim/lazyvim.json`; manage them with `:LazyExtras`.
 
+### Agent workflow
+
+Run the agent (e.g. Claude Code) in its own multiplexer pane; nvim auto-reloads files it edits.
+
+- `<leader>gv` / `<leader>gV` - Diffview of the working tree / current file history
+- `claudecode.nvim` (`provider = "none"`) lets a Claude running in another pane connect via `/ide`:
+  `<leader>ab` add buffer, `<leader>as` send selection, `<leader>aa` / `<leader>ad` accept / deny a diff
+- `<C-h/j/k/l>` move between nvim windows and, at the edge, to the neighbouring
+  Rex pane via `rex focus` (only inside Rex; set `vim.g.rex_bin` if `rex` on your `PATH` is not
+  the Rex multiplexer)
+
+### C/C++ in catkin workspaces
+
+`nvim/lua/plugins/clangd.lua` roots clangd at the nearest `package.xml`, points it at
+`<ws>/build/<pkg>/compile_commands.json`, and passes `--query-driver` so system headers resolve.
+Build the package first so the compile database exists. Headers that only exist in a dev
+container (e.g. `/opt/ros/...`) will still be reported as not found when editing on the host.
+
+### Troubleshooting
+
+- **Mason fails with `ensurepip` / venv errors** (Python tools such as `cmakelint`): a Python
+  without `venv` is first on `PATH` (e.g. a uv-managed one). Install the tool another way, e.g.
+  `uv tool install cmakelint cmakelang`.
+
 ### Customization
 
 Edit files in `~/neovim-setup/nvim/lua/`:
