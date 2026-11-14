@@ -108,7 +108,10 @@ nvim/
     │   ├── keymaps.lua      # Key bindings
     │   └── autocmds.lua     # Auto commands
     └── plugins/
-        └── theme.lua        # Theme & UI plugins
+        ├── colorscheme.lua  # Gruvbox
+        ├── explorer.lua     # Neo-tree
+        ├── ui.lua           # Snacks, which-key, lualine, bufferline
+        └── clangd.lua       # catkin-aware clangd (compile databases, system headers)
 ```
 
 Changes take effect immediately (no need to reinstall).
