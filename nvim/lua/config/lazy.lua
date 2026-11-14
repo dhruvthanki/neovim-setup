@@ -29,9 +29,7 @@ require("lazy").setup({
         colorscheme = "gruvbox",
       },
     },
-    -- Import any extras modules
-    { import = "lazyvim.plugins.extras.coding.mini-surround" },
-    { import = "lazyvim.plugins.extras.editor.mini-files" },
+    -- Extras are enabled in lazyvim.json (manage them with :LazyExtras)
     -- Import custom plugins
     { import = "plugins" },
   },
