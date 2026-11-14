@@ -93,6 +93,8 @@ The NeoVim configuration lives in `~/neovim-setup/nvim/` and is symlinked to `~/
 | `<C-/>` | Toggle terminal |
 | `<S-h>` / `<S-l>` | Previous/Next buffer |
 
+New to Vim? See [CHEATSHEET.md](CHEATSHEET.md) for a short learning order and the keys to know.
+
 ### Plugins Included
 
 - **LazyVim** - Base configuration framework (needs Neovim 0.12+ for the current nvim-treesitter)
