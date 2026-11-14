@@ -8,6 +8,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/lib/common.sh"
 source "$SCRIPT_DIR/lib/detect-os.sh"
 
+# Tool versions this config was tested with (installed via cargo / release tarball;
+# package-manager installs on pacman/brew follow the distro and are not pinned)
+TREESITTER_CLI_VERSION="0.27.2"
+LAZYGIT_VERSION="0.66.3"
+
 # Dependency lists by category
 BUILD_DEPS_APT="cmake ninja-build gettext curl git build-essential libtool libtool-bin autoconf automake pkg-config unzip"
 BUILD_DEPS_PACMAN="base-devel cmake ninja curl git unzip"
@@ -131,15 +136,15 @@ install_treesitter_cli() {
             ;;
     esac
     if command_exists cargo; then
-        cargo install tree-sitter-cli --locked && return 0
+        cargo install tree-sitter-cli --locked --version "$TREESITTER_CLI_VERSION" && return 0
     fi
     log_warn "Could not install the tree-sitter CLI (needs >= 0.26.1)"
-    log_warn "  Install it with: cargo install tree-sitter-cli --locked"
+    log_warn "  Install it with: cargo install tree-sitter-cli --locked --version $TREESITTER_CLI_VERSION"
     return 1
 }
 
 # Install lazygit (used by <leader>gg). Not packaged on older apt/dnf, so fall back
-# to the upstream release tarball.
+# to the pinned upstream release tarball.
 install_lazygit() {
     if command_exists lazygit; then
         log_info "lazygit already installed"
@@ -153,25 +158,19 @@ install_lazygit() {
             ;;
     esac
 
-    local arch version tmp
+    local arch tmp
     case "$(uname -m)" in
         x86_64) arch="x86_64" ;;
         aarch64|arm64) arch="arm64" ;;
         *) log_warn "No lazygit release for $(uname -m); install it manually"; return 1 ;;
     esac
-    version=$(curl -fsSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest \
-        | sed -n 's/.*"tag_name": *"v\([^"]*\)".*/\1/p')
-    if [[ -z "$version" ]]; then
-        log_warn "Could not determine the latest lazygit version; install it manually"
-        return 1
-    fi
     tmp=$(mktemp -d)
     curl -fsSL -o "$tmp/lazygit.tar.gz" \
-        "https://github.com/jesseduffield/lazygit/releases/download/v${version}/lazygit_${version}_Linux_${arch}.tar.gz" \
+        "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_${arch}.tar.gz" \
         && tar -xzf "$tmp/lazygit.tar.gz" -C "$tmp" lazygit \
         && mkdir -p "$HOME/.local/bin" \
         && install -m 0755 "$tmp/lazygit" "$HOME/.local/bin/lazygit" \
-        && log_success "lazygit $version installed to ~/.local/bin"
+        && log_success "lazygit $LAZYGIT_VERSION installed to ~/.local/bin"
     local status=$?
     rm -rf "$tmp"
     return $status

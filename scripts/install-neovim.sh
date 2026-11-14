@@ -10,7 +10,7 @@ source "$SCRIPT_DIR/lib/detect-os.sh"
 
 # Configuration
 NEOVIM_REPO="https://github.com/neovim/neovim.git"
-NEOVIM_VERSION="${NEOVIM_VERSION:-stable}"  # stable, nightly, or specific tag (e.g., v0.10.0)
+NEOVIM_VERSION="${NEOVIM_VERSION:-v0.12.6}"  # pinned (the version this config was tested with); or stable, nightly, another tag
 BUILD_DIR="${BUILD_DIR:-/tmp/neovim-build}"
 INSTALL_PREFIX="${INSTALL_PREFIX:-/usr/local}"
 
@@ -245,14 +245,14 @@ print_help() {
     echo ""
     echo "Options:"
     echo "  --method METHOD     Installation method: source, appimage, package (default: source)"
-    echo "  --version VERSION   NeoVim version: stable, nightly, or tag (default: stable)"
+    echo "  --version VERSION   NeoVim version: stable, nightly, or tag (default: pinned $NEOVIM_VERSION)"
     echo "  --prefix PATH       Installation prefix for source builds (default: /usr/local)"
     echo "  --remove            Remove existing NeoVim installation only"
     echo "  --check             Check current installation status"
     echo "  --help              Show this help message"
     echo ""
     echo "Examples:"
-    echo "  $0                          # Build latest stable from source"
+    echo "  $0                          # Build the pinned version from source"
     echo "  $0 --method appimage        # Install via AppImage"
     echo "  $0 --version nightly        # Build nightly from source"
     echo "  $0 --version v0.10.0        # Build specific version"
@@ -261,7 +261,7 @@ print_help() {
 # Main function
 main() {
     local method="$METHOD_SOURCE"
-    local version="stable"
+    local version="$NEOVIM_VERSION"
     local remove_only=false
     local check_only=false
 

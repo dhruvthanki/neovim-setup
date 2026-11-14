@@ -109,6 +109,21 @@ Run the agent (e.g. Claude Code) in its own multiplexer pane; nvim auto-reloads 
 Build the package first so the compile database exists. Headers that only exist in a dev
 container (e.g. `/opt/ros/...`) will still be reported as not found when editing on the host.
 
+### Tested toolchain
+
+What this config was last verified with (2026-11-14, Ubuntu 22.04). "Pinned" means the install
+scripts install exactly that version; "recorded" means it floats and the number is for reference.
+
+| Tool | Version | Status |
+|------|---------|--------|
+| Neovim | v0.12.6 | pinned in `scripts/install-neovim.sh` (`make update` moves to latest stable: bump the pin after) |
+| tree-sitter CLI | 0.27.2 | pinned in `scripts/install-deps.sh` (cargo route; pacman/brew follow the distro) |
+| lazygit | 0.66.3 | pinned in `scripts/install-deps.sh` (release-tarball route; pacman/brew follow the distro) |
+| Plugins incl. LazyVim v16.0.2 | see `nvim/lazy-lock.json` | pinned to exact commits; `lazyvim.json` lists the extras |
+| clangd, pyright, ruff, neocmakelsp, yaml-language-server | 23.1.0, 1.1.414, 0.17.5, 0.12.0, 2.0.0 | recorded: Mason installs language servers by name only, so they cannot be pinned from config |
+| lua-language-server, stylua, shfmt | 3.16.4, 2.3.1, v3.12.0 | recorded (Mason) |
+| cmakelint, cmakelang | 1.4.3, 0.6.13 | recorded (Mason, or `uv tool install` where Mason cannot build venvs) |
+
 ### Troubleshooting
 
 - **Mason fails with `ensurepip` / venv errors** (Python tools such as `cmakelint`): a Python

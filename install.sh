@@ -27,7 +27,7 @@ INSTALL_NVIM=true
 INSTALL_CONFIG=true
 INIT_PLUGINS=true
 NVIM_METHOD=""  # Will be set based on OS detection
-NVIM_VERSION="stable"
+NVIM_VERSION=""  # empty = install-neovim.sh's pinned default
 FORCE=false
 VERBOSE=false
 
@@ -195,7 +195,7 @@ do_install_nvim() {
         fi
     fi
 
-    "$SCRIPT_DIR/scripts/install-neovim.sh" --method "$NVIM_METHOD" --version "$NVIM_VERSION"
+    "$SCRIPT_DIR/scripts/install-neovim.sh" --method "$NVIM_METHOD" ${NVIM_VERSION:+--version "$NVIM_VERSION"}
 }
 
 # Setup configuration
