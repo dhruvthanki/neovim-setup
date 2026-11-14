@@ -10,24 +10,35 @@ cd ~/neovim-setup
 make install
 ```
 
+## Prerequisites
+
+`make install` does not fetch everything it needs. Have these ready:
+
+- **`sudo` access** for package installs; on Linux the default Neovim install builds from source into `/usr/local`.
+- **`git`, `curl` and a C compiler** (the build dependencies install the compiler on Linux). Treesitter parsers are compiled.
+- **A Rust toolchain (`cargo`) on Ubuntu/Debian/Fedora.** It builds the tree-sitter CLI (>= 0.26.1) that nvim-treesitter needs to compile parsers. The script does not install Rust; without the CLI treesitter highlighting will not work. On Arch and macOS the package manager provides the CLI instead.
+- **Node.js 22+**, not installed by the script. pyright and yaml-language-server run on it. yaml-language-server declares `>= 22.13`; Node 20 worked in testing for diagnostics. Distro packages can be too old, so use a source that gives a current Node (NodeSource, nvm, ...).
+- **Network access.** First launch installs plugins, parsers and language servers in the background and takes a few minutes.
+
 ## What It Does
 
 1. **Detects your OS** (Ubuntu, Debian, Arch, Fedora, macOS)
 2. **Backs up** existing `~/.config/nvim` if present
 3. **Installs dependencies** (cmake, ninja, gcc, ripgrep, fd, fzf, tree-sitter CLI, lazygit)
-4. **Installs NeoVim** (via Homebrew on macOS, built from source on Linux)
+4. **Installs NeoVim** (built from source at the pinned version on Linux; Homebrew on macOS, which installs the current release)
 5. **Symlinks configuration** from this repo to `~/.config/nvim`
-6. **Auto-installs plugins** via lazy.nvim on first launch
+6. **Auto-installs plugins** via lazy.nvim on first launch (Mason tools and treesitter parsers install in the background at the same time)
 
 ## Supported Platforms
 
 | OS | Package Manager | Status |
 |----|-----------------|--------|
-| Ubuntu/Debian | apt | Primary |
-| Arch Linux | pacman | Primary |
-| Fedora | dnf | Secondary |
-| macOS | Homebrew | Secondary |
-| Other Linux | AppImage | Fallback |
+| Ubuntu 22.04 | apt | Verified: the config, plugins, language servers and the individual install steps. A clean-machine `make install` has not been run end to end. |
+| Other Debian/Ubuntu | apt | Implemented, untested |
+| Arch Linux | pacman | Implemented, untested |
+| Fedora | dnf | Implemented, untested |
+| macOS | Homebrew | Implemented, untested |
+| Other Linux | AppImage | Fallback, untested |
 
 ## Commands
 
@@ -116,7 +127,7 @@ scripts install exactly that version; "recorded" means it floats and the number 
 
 | Tool | Version | Status |
 |------|---------|--------|
-| Neovim | v0.12.6 | pinned in `scripts/install-neovim.sh` (`make update` moves to latest stable: bump the pin after) |
+| Neovim | v0.12.6 | pinned in `scripts/install-neovim.sh` for source and AppImage installs; the Homebrew and apt-PPA routes install whatever is current. `make update` moves to latest stable: bump the pin after |
 | tree-sitter CLI | 0.27.2 | pinned in `scripts/install-deps.sh` (cargo route; pacman/brew follow the distro) |
 | lazygit | 0.66.3 | pinned in `scripts/install-deps.sh` (release-tarball route; pacman/brew follow the distro) |
 | Plugins incl. LazyVim v16.0.2 | see `nvim/lazy-lock.json` | pinned to exact commits; `lazyvim.json` lists the extras |
@@ -252,9 +263,11 @@ nvim -c "checkhealth"  # Full check inside NeoVim
 │   └── setup-config.sh       # Setup config symlink
 └── nvim/                     # NeoVim configuration
     ├── init.lua
+    ├── lazyvim.json          # Enabled LazyVim extras
+    ├── lazy-lock.json        # Plugin versions, pinned to exact commits
     └── lua/
-        ├── config/
-        └── plugins/
+        ├── config/           # options, keymaps, autocmds, lazy.nvim bootstrap
+        └── plugins/          # one file per concern
 ```
 
 ## License
