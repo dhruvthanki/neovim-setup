@@ -99,12 +99,6 @@ map("x", "<leader>p", [["_dP]], { desc = "Paste without yanking" })
 -- Delete without yanking
 map({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete without yanking" })
 
--- Quick save
-map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save file" })
-
--- Select all
-map("n", "<C-a>", "gg<S-v>G", { desc = "Select all" })
-
 -- Terminal mappings
 map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
 map("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to left window" })

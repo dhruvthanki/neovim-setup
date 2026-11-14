@@ -43,9 +43,6 @@ opt.clipboard = "unnamedplus"
 opt.splitright = true
 opt.splitbelow = true
 
--- Consider - as part of word
-opt.iskeyword:append("-")
-
 -- Disable swap files
 opt.swapfile = false
 opt.backup = false
@@ -55,16 +52,13 @@ opt.undofile = true
 -- Auto-reload files changed externally
 opt.autoread = true
 
--- Faster completion
-opt.updatetime = 50
+-- Key sequence timeout
 opt.timeoutlen = 300
 
 -- Better completion experience
 opt.completeopt = "menu,menuone,noselect"
 
--- Fold settings (using treesitter)
-opt.foldmethod = "expr"
-opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- Fold settings (LazyVim sets the treesitter foldmethod/foldexpr)
 opt.foldenable = false
 opt.foldlevel = 99
 

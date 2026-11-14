@@ -112,21 +112,6 @@ if transparent_background then
   })
 end
 
--- Remove trailing whitespace on save
-autocmd("BufWritePre", {
-  group = augroup("trim_whitespace", { clear = true }),
-  pattern = "*",
-  callback = function()
-    local exclude_ft = { "markdown", "diff" }
-    if vim.tbl_contains(exclude_ft, vim.bo.filetype) then
-      return
-    end
-    local save_cursor = vim.fn.getpos(".")
-    vim.cmd([[%s/\s\+$//e]])
-    vim.fn.setpos(".", save_cursor)
-  end,
-})
-
 -- Disable line numbers in terminal
 autocmd("TermOpen", {
   group = augroup("terminal_settings", { clear = true }),
