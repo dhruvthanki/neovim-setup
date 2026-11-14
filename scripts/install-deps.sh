@@ -14,7 +14,8 @@ BUILD_DEPS_PACMAN="base-devel cmake ninja curl git unzip"
 BUILD_DEPS_DNF="cmake ninja-build gettext curl git gcc gcc-c++ make libtool autoconf automake pkgconfig unzip"
 BUILD_DEPS_BREW="cmake ninja gettext curl git"
 
-RUNTIME_DEPS_APT="ripgrep fd-find fzf xclip wl-clipboard"
+# python3-venv: Mason installs Python tools (cmakelint, cmakelang) into venvs
+RUNTIME_DEPS_APT="ripgrep fd-find fzf xclip wl-clipboard python3-venv"
 RUNTIME_DEPS_PACMAN="ripgrep fd fzf xclip wl-clipboard"
 RUNTIME_DEPS_DNF="ripgrep fd-find fzf xclip wl-clipboard"
 RUNTIME_DEPS_BREW="ripgrep fd fzf"
